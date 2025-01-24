@@ -6,10 +6,6 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TodoController;
 use App\Http\Middleware\CheckTokenVersion;
 
-
-Route::post('/register', [AuthController::class, 'register']);
-
-
 Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
     Route::post('register', 'register');

@@ -7,9 +7,6 @@ use Illuminate\Http\Request;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 use Symfony\Component\HttpFoundation\Response;
 
-
-// Se encarga de la validación del Token del JWT
-
 class CheckTokenVersion
 {
     public function handle(Request $request, Closure $next): Response

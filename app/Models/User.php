@@ -8,9 +8,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
-
-// Takes care of JWT implementation
-
 class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable;
@@ -65,15 +62,7 @@ class User extends Authenticatable implements JWTSubject
     {
         return [
             'token_version' => $this->token_version // Include token version in JWT claims
-            'channels' => $this->getUserChannels(), // Método personalizado
         ];
-    }
-
-    public function getUserChannels()
-    {
-        // Devuelve una lista de canales de ejemplo. Esto debería reemplazarse
-        // con la lógica de tu aplicación.
-        return ['channel1', 'channel2', 'channel3'];
     }
 
 }
