@@ -31,7 +31,7 @@
 </head>
 <body>
     <div class="container">
-        @if (isset($user))
+        @if (isset($user) && $user)
             <h1>Welcome, {{ $user->name }}!</h1>
             <p>Email: {{ $user->email }}</p>
         @else

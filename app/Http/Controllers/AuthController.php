@@ -114,4 +114,21 @@ class AuthController extends Controller
         ]);
     }
 
+    public function home()
+    {
+        // Verificar si el usuario está autenticado
+        $user = Auth::user();
+
+        // Si no hay usuario autenticado, redirigir a la página de login
+        if (!$user) {
+            return redirect()->route('login'); // Redirigir a login si no hay usuario autenticado
+        }
+
+        dd($user);
+        return view('home', ['user' => $user]);
+
+        // Pasar el usuario a la vista 'home'
+        return view('home', ['user' => $user]);
+    }
+
 }
