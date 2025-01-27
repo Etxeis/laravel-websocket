@@ -85,9 +85,7 @@
       const password = document.getElementById('password').value;
 
       const errorMessage = document.getElementById('errorMessage');
-      const successMessage = document.getElementById('successMessage');
       errorMessage.textContent = '';
-      successMessage.textContent = '';
 
       try {
         const response = await fetch('http://localhost:8000/api/login', {
@@ -101,10 +99,11 @@
         const result = await response.json();
 
         if (response.ok) {
-          successMessage.textContent = 'Login successful!';
-          console.log('User Data:', result);
+          const userData = JSON.stringify(result.user); // Serializar el usuario como JSON
+          const redirectUrl = `${result.redirect}?user=${encodeURIComponent(userData)}`;
+          window.location.href = redirectUrl; // Redirigir a la página de inicio
         } else {
-          errorMessage.textContent = result.message || 'Login failed. Please try again.';
+          errorMessage.textContent = result.message || 'Login failed.';
         }
       } catch (error) {
         errorMessage.textContent = 'Unable to connect to the server.';

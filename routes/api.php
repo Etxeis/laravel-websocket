@@ -23,3 +23,4 @@ Route::middleware([CheckTokenVersion::class])->group(function () {
         Route::delete('todo/{id}', 'destroy');
     });
 });
+

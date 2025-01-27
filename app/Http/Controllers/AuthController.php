@@ -19,12 +19,14 @@ class AuthController extends Controller
         $this->middleware('auth:api', ['except' => ['login','register']]);
     }
 
+
     public function login(Request $request)
     {
         $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
+
         $credentials = $request->only('email', 'password');
 
         $token = Auth::attempt($credentials);
@@ -35,24 +37,23 @@ class AuthController extends Controller
             ], 401);
         }
 
-        // First increment the token version
         $user = Auth::getProvider()->retrieveByCredentials($credentials);
         $user->token_version += 1;
         $user->save();
 
-        // Then generate the token - this will include the new version in the payload
         $token = auth()->attempt($credentials);
 
         return response()->json([
-                'status' => 'success',
-                'user' => $user,
-                'authorisation' => [
-                    'token' => $token,
-                    'type' => 'bearer',
-                ]
-            ]);
-
+            'status' => 'success',
+            'user' => $user,
+            'authorisation' => [
+                'token' => $token,
+                'type' => 'bearer',
+            ],
+            'redirect' => url('/home?user=' . $user->id), // URL para redirección
+        ]);
     }
+
 
     public function register(Request $request){
         Log::info(message: 'Here');
