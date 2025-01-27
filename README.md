@@ -36,6 +36,14 @@ cp .env.example .env
 ```
 php artisan key:generate
 ```
+### Package Configurations
+```
+php artisan vendor:publish --provider="PHPOpenSourceSaver\JWTAuth\Providers\LaravelServiceProvider"
+```
+### Token Encyption
+```
+php artisan jwt:secret
+```
 ### Run the Vite Dev
 ```
 npm run dev
