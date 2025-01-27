@@ -75,6 +75,16 @@
       <div class="form-group">
         <label for="password">Password</label>
         <input type="password" id="password" name="password" required />
+        <div class="password-info">
+          <strong>Requisitos de la contraseña:</strong>
+          <ul>
+            <li>Al menos 8 caracteres</li>
+            <li>Debe contener letras</li>
+            <li>Incluye mayúsculas y minúsculas</li>
+            <li>Al menos un número</li>
+            <li>Al menos un símbolo</li>
+          </ul>
+        </div>
       </div>
       <button type="submit">Register</button>
       <div class="error" id="errorMessage"></div>

@@ -2,11 +2,13 @@
 
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rules\Password;
 
 use App\Models\User;
 
@@ -61,7 +63,16 @@ class AuthController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:2',
+            'password' => [
+                'required',
+                'string',
+                Password::min(8) // Contraseña de al menos 8 caracteres
+                    ->letters() // Requiere al menos una letra
+                    ->mixedCase() // Requiere mayúsculas y minúsculas
+                    ->numbers() // Requiere al menos un número
+                    ->symbols() // Requiere al menos un símbolo
+                    ->uncompromised(), // Verifica que no esté en bases de datos comprometidas
+            ],
         ]);
 
         $user = User::create([

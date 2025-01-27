@@ -57,6 +57,12 @@
       color: green;
       margin-top: 10px;
     }
+    .password-info {
+      font-size: 14px;
+      color: #555;
+      margin-top: 10px;
+      line-height: 1.5;
+    }
   </style>
 </head>
 <body>
