@@ -44,6 +44,10 @@ php artisan vendor:publish --provider="PHPOpenSourceSaver\JWTAuth\Providers\Lara
 ```
 php artisan jwt:secret
 ```
+### Check database migrations
+```
+php artisan migrate
+```
 ### Run the Vite Dev
 ```
 npm run dev
