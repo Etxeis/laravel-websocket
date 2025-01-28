@@ -31,8 +31,8 @@
 </head>
 <body>
     <div class="container">
-        <h1>Bienvenido, {{ $nombre ?? 'Invitado' }}</h1>
-        <p>Tu correo electrónico es: {{ $correo ?? 'No disponible' }}</p>
+        <h1>Bienvenido, {{ $nombre }}</h1>
+        <p>Tu correo electrónico es: {{ $correo }}</p>
     </div>
 </body>
 </html>

@@ -125,15 +125,11 @@ class AuthController extends Controller
         }
 
         // Obtener el nombre y el correo electrónico del usuario
-        $nombre = Auth::user()->name;
-        $correo = Auth::user()->email;
+        $nombre = $user->name;
+        $correo = $user->email;
 
         // Pasar el nombre y el correo electrónico a la vista 'home'
-        return view('home', [
-            'nombre' => $nombre,
-            'correo' => $correo,
-            'user' => $user // Opcional: si necesitas pasar todo el objeto User
-        ]);
+        return view('home', ['nombre' => $nombre, 'correo' => $correo]);
     }
 
 }
