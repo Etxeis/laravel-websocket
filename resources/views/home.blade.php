@@ -31,13 +31,8 @@
 </head>
 <body>
     <div class="container">
-        @if (isset($user) && $user)
-            <h1>Welcome, {{ $user->name }}!</h1>
-            <p>Email: {{ $user->email }}</p>
-        @else
-            <h1>Welcome!</h1>
-            <p>No user data available.</p>
-        @endif
+        <h1>Bienvenido, {{ $nombre ?? 'Invitado' }}</h1>
+        <p>Tu correo electrónico es: {{ $correo ?? 'No disponible' }}</p>
     </div>
 </body>
 </html>

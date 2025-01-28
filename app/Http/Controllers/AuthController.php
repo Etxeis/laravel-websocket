@@ -124,11 +124,16 @@ class AuthController extends Controller
             return redirect()->route('login'); // Redirigir a login si no hay usuario autenticado
         }
 
-        dd($user);
-        return view('home', ['user' => $user]);
+        // Obtener el nombre y el correo electrónico del usuario
+        $nombre = Auth::user()->name;
+        $correo = Auth::user()->email;
 
-        // Pasar el usuario a la vista 'home'
-        return view('home', ['user' => $user]);
+        // Pasar el nombre y el correo electrónico a la vista 'home'
+        return view('home', [
+            'nombre' => $nombre,
+            'correo' => $correo,
+            'user' => $user // Opcional: si necesitas pasar todo el objeto User
+        ]);
     }
 
 }

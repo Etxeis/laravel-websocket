@@ -27,5 +27,12 @@ Route::get('/home', function (Request $request) {
     }
 
     $user = json_decode($user); // Decodificar el JSON recibido
-    return view('home', ['user' => $user]);
+
+    // Verificar si el objeto user fue decodificado correctamente
+    if (is_null($user)) {
+        return redirect('/login'); // Redirigir si no se pudo decodificar
+    }
+
+    // Asegúrate de que el objeto tenga las propiedades 'name' y 'email'
+    return view('home', ['nombre' => $user->name ?? 'Invitado', 'correo' => $user->email ?? 'No disponible']);
 })->name('home');
