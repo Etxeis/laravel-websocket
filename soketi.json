@@ -1,0 +1,9 @@
+{
+    "apps": [
+        {
+            "id": "your-app-id",
+            "key": "your-app-key",
+            "secret": "your-app-secret"
+        }
+    ]
+}

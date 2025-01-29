@@ -33,4 +33,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::middleware('auth:api')->post('/logout', [AuthController::class, 'logout']);
 
-Route::middleware(['auth:api', 'checkTokenAndChannel'])->post('/subscribe/ventas', [SubscriptionController::class, 'subscribeToVentas']);
+Route::middleware('auth:api')->post('/subscribe/ventas', [SubscriptionController::class, 'subscribeToVentas']);

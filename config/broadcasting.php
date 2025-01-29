@@ -54,9 +54,9 @@ return [
             'options' => [
                 'cluster' => env('PUSHER_APP_CLUSTER'),
                 'encrypted' => true,
-                'host' => env('SOCKETI_HOST', '127.0.0.1'),
-                'port' => env('SOCKETI_PORT', 6001),
-                'scheme' => env('SOCKETI_SCHEME', 'http'),
+                'host' => env('PUSHER_HOST', '127.0.0.1'),
+                'port' => env('PUSHER_PORT', 6001),
+                'scheme' => env('PUSHER_SCHEME', 'http'),
             ],
         ],
 

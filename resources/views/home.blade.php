@@ -160,13 +160,6 @@
             }
         }
 
-        // Conexión WebSocket (sólo para pruebas)
-        const socket = new WebSocket('ws://localhost:6001/app/your-app-key?protocol=7&client=browser&version=5.1');
-        socket.onopen = () => console.log("Conectado al servidor WebSocket");
-        socket.onmessage = (event) => console.log('Mensaje del servidor: ', event.data);
-        socket.onerror = (error) => console.log('Error WebSocket: ', error);
-        socket.onclose = () => console.log("Conexión WebSocket cerrada");
-
         // Manejo del evento de clic para suscribirse al canal
         document.getElementById('subscribeButton').addEventListener('click', subscribeToChannel);
 
