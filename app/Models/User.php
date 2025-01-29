@@ -1,7 +1,7 @@
 <?php
 
-
 namespace App\Models;
+
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -21,7 +21,8 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
-        'token_version'  // Add this field to track token versions
+        'token_version',
+        'channels' // Agregamos el campo channels
     ];
 
     /**
@@ -41,6 +42,7 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'channels' => 'array', // Convertir channels a array automáticamente
     ];
 
     /**
@@ -61,8 +63,8 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [
-            'token_version' => $this->token_version // Include token version in JWT claims
+            'token_version' => $this->token_version, // Incluir versión del token
+            'channels' => $this->channels ?? [], // Incluir los canales a los que el usuario tiene acceso
         ];
     }
-
 }

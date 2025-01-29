@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->integer('token_version')->default(1); // Nueva columna para la versión del token
+            $table->json('channels')->nullable(); // Nueva columna para los canales
             $table->rememberToken();
             $table->timestamps();
         });

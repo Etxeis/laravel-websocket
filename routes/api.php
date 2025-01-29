@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TodoController;
 use App\Http\Middleware\CheckTokenVersion;
+use App\Http\Controllers\SubscriptionController;
 
 Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
@@ -32,3 +33,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::middleware('auth:api')->post('/logout', [AuthController::class, 'logout']);
 
+Route::middleware(['auth:api', 'checkTokenAndChannel'])->post('/subscribe/ventas', [SubscriptionController::class, 'subscribeToVentas']);
