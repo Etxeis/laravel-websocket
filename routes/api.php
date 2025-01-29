@@ -13,7 +13,6 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('refresh', 'refresh');
 });
 
-
 Route::middleware([CheckTokenVersion::class])->group(function () {
     Route::controller(TodoController::class)->group(function () {
         Route::get('todos', 'index');
@@ -23,4 +22,13 @@ Route::middleware([CheckTokenVersion::class])->group(function () {
         Route::delete('todo/{id}', 'destroy');
     });
 });
+
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return response()->json([
+        'nombre' => $request->user()->name,
+        'correo' => $request->user()->email
+    ]);
+});
+
+Route::middleware('auth:api')->post('/logout', [AuthController::class, 'logout']);
 

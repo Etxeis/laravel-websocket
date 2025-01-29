@@ -114,22 +114,26 @@ class AuthController extends Controller
         ]);
     }
 
-    public function home()
+    public function home(Request $request)
     {
-        // Verificar si el usuario está autenticado
-        $user = Auth::user();
+        // Obtener el token desde localStorage (enviado en el header Authorization)
+        $token = $request->header('Authorization');
 
-        // Si no hay usuario autenticado, redirigir a la página de login
-        if (!$user) {
-            return redirect()->route('login'); // Redirigir a login si no hay usuario autenticado
+        if (!$token) {
+            return redirect()->route('login'); // Si no hay token, redirigir a login
         }
 
-        // Obtener el nombre y el correo electrónico del usuario
-        $nombre = $user->name;
-        $correo = $user->email;
+        // Intentar autenticar al usuario con el token
+        $user = Auth::guard('api')->setToken(str_replace('Bearer ', '', $token))->user();
 
-        // Pasar el nombre y el correo electrónico a la vista 'home'
-        return view('home', ['nombre' => $nombre, 'correo' => $correo]);
+        if (!$user) {
+            return redirect()->route('login'); // Si el token no es válido, redirigir
+        }
+
+        return view('home', [
+            'nombre' => $user->name,
+            'correo' => $user->email
+        ]);
     }
 
 }

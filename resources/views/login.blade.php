@@ -82,39 +82,39 @@
       <div class="success" id="successMessage"></div>
     </form>
   </div>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
 
-  <script>
-    document.getElementById('loginForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = '';
 
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
+            try {
+                const response = await fetch('http://localhost:8000/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password }),
+                });
 
-      const errorMessage = document.getElementById('errorMessage');
-      errorMessage.textContent = '';
+                const result = await response.json();
 
-      try {
-        const response = await fetch('http://localhost:8000/api/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email, password }),
+                if (response.ok) {
+                    // ✅ Guardar token en localStorage
+                    localStorage.setItem('token', result.authorisation.token);
+
+                    // ✅ Redirigir a home con el token
+                    window.location.href = "/home";
+                } else {
+                    errorMessage.textContent = result.message || 'Login failed.';
+                }
+            } catch (error) {
+                errorMessage.textContent = 'Unable to connect to the server.';
+            }
         });
-
-        const result = await response.json();
-
-        if (response.ok) {
-          const userData = JSON.stringify(result.user); // Serializar el usuario como JSON
-          const redirectUrl = `${result.redirect}?user=${encodeURIComponent(userData)}`;
-          window.location.href = redirectUrl; // Redirigir a la página de inicio
-        } else {
-          errorMessage.textContent = result.message || 'Login failed.';
-        }
-      } catch (error) {
-        errorMessage.textContent = 'Unable to connect to the server.';
-      }
-    });
-  </script>
+    </script>
 </body>
 </html>
