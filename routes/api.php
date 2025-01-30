@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TodoController;
 use App\Http\Middleware\CheckTokenVersion;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\ChannelController;
 
 Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
@@ -34,3 +35,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::middleware('auth:api')->post('/logout', [AuthController::class, 'logout']);
 
 Route::middleware('auth:api')->post('/subscribe/ventas', [SubscriptionController::class, 'subscribeToVentas']);
+
+// Agregar un canal a un usuario
+Route::post('/user/add-channel', [ChannelController::class, 'addChannel']);
+
+// Eliminar un canal de un usuario
+Route::post('/user/remove-channel', [ChannelController::class, 'removeChannel']);

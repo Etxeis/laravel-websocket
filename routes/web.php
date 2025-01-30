@@ -23,3 +23,7 @@ Route::get('/home', function (Request $request) {
         'correo' => Auth::user()->email ?? 'Sin correo'
     ]);
 });
+
+Route::get('/channelAdmin', function () {
+    return view('channelAdmin');
+});
