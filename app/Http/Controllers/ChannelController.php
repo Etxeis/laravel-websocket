@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller; // Asegúrate de importar la clase base Controller
 
 class ChannelController extends Controller
 {
