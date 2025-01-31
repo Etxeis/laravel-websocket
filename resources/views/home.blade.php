@@ -56,6 +56,41 @@
             font-size: 16px;
             color: #333;
         }
+        .message-box {
+            margin-top: 20px;
+        }
+        .message-box textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            resize: vertical;
+        }
+        .message-box button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .message-box button:hover {
+            background-color: #0056b3;
+        }
+        .messages {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .messages ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .messages li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
     </style>
 </head>
 <body>
@@ -69,8 +104,24 @@
         <!-- Mensaje de estado de la suscripción -->
         <div id="statusMessage" class="status-message"></div>
 
+        <!-- Área para enviar mensajes -->
+        <div class="message-box">
+            <textarea id="messageInput" placeholder="Escribe tu mensaje aquí..."></textarea>
+            <button id="sendMessageButton" class="send-btn">Enviar mensaje</button>
+        </div>
+
+        <!-- Área para mostrar mensajes recibidos -->
+        <div class="messages">
+            <h3>Mensajes:</h3>
+            <ul id="messagesList"></ul>
+        </div>
+
         <button class="logout-btn" onclick="logout()">Cerrar sesión</button>
     </div>
+
+    <!-- Cargar Laravel Echo -->
+    @vite(['resources/js/app.js']) <!-- Si estás usando Vite -->
+    <!-- <script src="{{ asset('js/app.js') }}"></script> --> <!-- Si estás usando Laravel Mix -->
 
     <script>
         // Función para cargar los datos del usuario
@@ -160,8 +211,57 @@
             }
         }
 
+        // Función para enviar un mensaje al canal
+        async function sendMessage() {
+            const token = localStorage.getItem('token');
+            const message = document.getElementById('messageInput').value;
+
+            if (!token || !message) {
+                alert('Por favor, escribe un mensaje.');
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:8000/api/send-message', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ channel: 'ventas', message }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('messageInput').value = ''; // Limpiar el área de texto
+                } else {
+                    alert(data.error || 'Error al enviar el mensaje.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error en la conexión con el servidor.');
+            }
+        }
+
+        // Escuchar mensajes del canal 'ventas'
+        if (window.Echo) {
+            window.Echo.channel('ventas')
+                .listen('.MessageSent', (data) => {
+                    const messagesList = document.getElementById('messagesList');
+                    const li = document.createElement('li');
+                    li.textContent = `${data.user.name}: ${data.message}`;
+                    messagesList.appendChild(li);
+                });
+        } else {
+            console.error('Laravel Echo no está configurado correctamente.');
+        }
+
         // Manejo del evento de clic para suscribirse al canal
         document.getElementById('subscribeButton').addEventListener('click', subscribeToChannel);
+
+        // Manejo del evento de clic para enviar mensajes
+        document.getElementById('sendMessageButton').addEventListener('click', sendMessage);
 
         // Cargar los datos del usuario al cargar la página
         document.addEventListener('DOMContentLoaded', loadUserData);

@@ -7,6 +7,7 @@ use App\Http\Controllers\TodoController;
 use App\Http\Middleware\CheckTokenVersion;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\ChannelController;
+use App\Http\Controllers\MessageController;
 
 Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
@@ -41,3 +42,6 @@ Route::post('/user/add-channel', [ChannelController::class, 'addChannel']);
 
 // Eliminar un canal de un usuario
 Route::post('/user/remove-channel', [ChannelController::class, 'removeChannel']);
+
+// Enviar mensaje por canal
+Route::post('/send-message', [MessageController::class, 'sendMessage']);
