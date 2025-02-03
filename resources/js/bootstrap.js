@@ -10,6 +10,11 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.Pusher = Pusher;
 
 // Configurar Laravel Echo con Soketi
+console.log('Configurando Laravel Echo...');
+console.log('Pusher App Key:', import.meta.env.VITE_PUSHER_APP_KEY);
+console.log('Pusher Host:', import.meta.env.VITE_PUSHER_HOST);
+console.log('Pusher Port:', import.meta.env.VITE_PUSHER_PORT);
+
 window.Echo = new Echo({
     broadcaster: 'pusher',
     key: import.meta.env.VITE_PUSHER_APP_KEY,
@@ -21,6 +26,7 @@ window.Echo = new Echo({
     enabledTransports: ['ws', 'wss'],
 });
 
+console.log('Laravel Echo configurado:', window.Echo);
 // Escuchar errores de conexión
 window.Echo.connector.pusher.connection.bind('error', (err) => {
     console.error('❌ Error de conexión con WebSocket:', err);

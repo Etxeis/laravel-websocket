@@ -213,58 +213,74 @@
 
         // Función para enviar un mensaje al canal
         async function sendMessage() {
+            // Verificar si hay un token en localStorage
             const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = "/login"; // Redirigir al login si no hay token
+                return;
+            }
+
+            // Obtener el mensaje del textarea
             const message = document.getElementById('messageInput').value;
 
-            if (!token || !message) {
+            // Verificar si el mensaje está vacío
+            if (!message) {
                 alert('Por favor, escribe un mensaje.');
                 return;
             }
 
             try {
+                // Enviar el mensaje al servidor
                 const response = await fetch('http://localhost:8000/api/send-message', {
                     method: 'POST',
                     headers: {
-                        'Authorization': 'Bearer ' + token,
+                        'Authorization': 'Bearer ' + token, // Incluir el token en el encabezado
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ channel: 'ventas', message }),
+                    body: JSON.stringify({ channel: 'ventas', message }), // Enviar el mensaje y el canal
                 });
 
+                // Procesar la respuesta del servidor
                 const data = await response.json();
 
                 if (response.ok) {
                     document.getElementById('messageInput').value = ''; // Limpiar el área de texto
                 } else {
-                    alert(data.error || 'Error al enviar el mensaje.');
+                    alert(data.error || 'Error al enviar el mensaje.'); // Mostrar un mensaje de error
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('Error en la conexión con el servidor.');
+                alert('Error en la conexión con el servidor.'); // Mostrar un mensaje de error en caso de excepción
             }
         }
 
         // Escuchar mensajes del canal 'ventas'
-        if (window.Echo) {
-            window.Echo.channel('ventas')
-                .listen('.MessageSent', (data) => {
-                    const messagesList = document.getElementById('messagesList');
-                    const li = document.createElement('li');
-                    li.textContent = `${data.user.name}: ${data.message}`;
-                    messagesList.appendChild(li);
-                });
-        } else {
-            console.error('Laravel Echo no está configurado correctamente.');
-        }
+        // Esperar a que el DOM esté completamente cargado
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('window.Echo en home.blade.php:', window.Echo);
 
-        // Manejo del evento de clic para suscribirse al canal
-        document.getElementById('subscribeButton').addEventListener('click', subscribeToChannel);
+            if (window.Echo) {
+                window.Echo.channel('ventas')
+                    .listen('.MessageSent', (data) => {
+                        console.log('Mensaje recibido:', data); // Agrega este log para depuración
+                        const messagesList = document.getElementById('messagesList');
+                        const li = document.createElement('li');
+                        li.textContent = `${data.user.name}: ${data.message}`;
+                        messagesList.appendChild(li);
+                    });
+            } else {
+                console.error('Laravel Echo no está configurado correctamente.');
+            }
 
-        // Manejo del evento de clic para enviar mensajes
-        document.getElementById('sendMessageButton').addEventListener('click', sendMessage);
+            // Manejo del evento de clic para suscribirse al canal
+            document.getElementById('subscribeButton').addEventListener('click', subscribeToChannel);
 
-        // Cargar los datos del usuario al cargar la página
-        document.addEventListener('DOMContentLoaded', loadUserData);
+            // Manejo del evento de clic para enviar mensajes
+            document.getElementById('sendMessageButton').addEventListener('click', sendMessage);
+
+            // Cargar los datos del usuario al cargar la página
+            loadUserData();
+        });
     </script>
 </body>
 </html>
