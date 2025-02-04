@@ -37,14 +37,17 @@ return [
             'app_id' => env('PUSHER_APP_ID'),
             'options' => [
                 'cluster' => env('PUSHER_APP_CLUSTER'),
-                'host' => env('PUSHER_HOST') ?: 'api-'.env('PUSHER_APP_CLUSTER', 'mt1').'.pusher.com',
-                'port' => env('PUSHER_PORT', 443),
-                'scheme' => env('PUSHER_SCHEME', 'https'),
+                'useTLS' => true,
                 'encrypted' => true,
-                'useTLS' => env('PUSHER_SCHEME', 'https') === 'https',
-            ],
-            'client_options' => [
-                // Guzzle client options: https://docs.guzzlephp.org/en/stable/request-options.html
+                'host' => env('LARAVEL_WEBSOCKETS_HOST', '127.0.0.1'),
+                'port' => env('LARAVEL_WEBSOCKETS_PORT', 6001),
+                'scheme' => env('LARAVEL_WEBSOCKETS_SCHEME', 'http'),
+                'authEndpoint' => '/broadcasting/auth', // Endpoint de autenticación
+                'auth' => [
+                    'headers' => [
+                        'Authorization' => 'Bearer ' . request()->bearerToken(), // Enviar token JWT
+                    ],
+                ],
             ],
         ],
 

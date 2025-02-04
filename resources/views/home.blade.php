@@ -257,30 +257,35 @@
         // Escuchar mensajes del canal 'ventas'
         // Esperar a que el DOM esté completamente cargado
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('window.Echo en home.blade.php:', window.Echo);
+            console.log('Verificando Laravel Echo:', window.Echo);
 
             if (window.Echo) {
-                window.Echo.channel('ventas')
+                window.Echo.private('ventas') // Si es un canal privado, usa private
                     .listen('.MessageSent', (data) => {
-                        console.log('Mensaje recibido:', data); // Agrega este log para depuración
+                        console.log('Mensaje recibido:', data);
+
+                        if (!data || !data.message) {
+                            console.error('Error: el mensaje recibido no es válido', data);
+                            return;
+                        }
+
                         const messagesList = document.getElementById('messagesList');
                         const li = document.createElement('li');
-                        li.textContent = `${data.user.name}: ${data.message}`;
+                        li.textContent = `${data.user?.name || 'Usuario desconocido'}: ${data.message}`;
                         messagesList.appendChild(li);
+                    })
+                    .error((error) => {
+                        console.error('Error al suscribirse al canal:', error);
                     });
+
             } else {
                 console.error('Laravel Echo no está configurado correctamente.');
             }
 
-            // Manejo del evento de clic para suscribirse al canal
             document.getElementById('subscribeButton').addEventListener('click', subscribeToChannel);
-
-            // Manejo del evento de clic para enviar mensajes
             document.getElementById('sendMessageButton').addEventListener('click', sendMessage);
-
-            // Cargar los datos del usuario al cargar la página
             loadUserData();
-        });
+    });
     </script>
 </body>
 </html>
