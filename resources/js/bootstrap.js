@@ -18,17 +18,12 @@ console.log('Pusher Port:', import.meta.env.VITE_PUSHER_PORT);
 window.Echo = new Echo({
     broadcaster: 'pusher',
     key: import.meta.env.VITE_PUSHER_APP_KEY,
-    cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
-    wsHost: import.meta.env.VITE_LARAVEL_WEBSOCKETS_HOST || window.location.hostname,
-    wsPort: import.meta.env.VITE_LARAVEL_WEBSOCKETS_PORT || 6001,
-    forceTLS: false,
-    disableStats: true,
-    authEndpoint: "http://127.0.0.1:8000/broadcasting/auth",
-    auth: {
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-    },
+    cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER ?? 'mt1',
+    wsHost: import.meta.env.VITE_PUSHER_HOST ? import.meta.env.VITE_PUSHER_HOST : `ws-${import.meta.env.VITE_PUSHER_APP_CLUSTER}.pusher.com`,
+    wsPort: import.meta.env.VITE_PUSHER_PORT ?? 80,
+    wssPort: import.meta.env.VITE_PUSHER_PORT ?? 443,
+    forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? 'https') === 'https',
+    enabledTransports: ['ws', 'wss'],
 });
 
 console.log('Laravel Echo configurado:', window.Echo);
