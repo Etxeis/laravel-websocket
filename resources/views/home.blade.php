@@ -245,6 +245,7 @@
 
                 if (response.ok) {
                     document.getElementById('messageInput').value = ''; // Limpiar el área de texto
+                    console.log("Mensaje enviado");
                 } else {
                     alert(data.error || 'Error al enviar el mensaje.'); // Mostrar un mensaje de error
                 }
@@ -260,14 +261,9 @@
             console.log('Verificando Laravel Echo:', window.Echo);
 
             if (window.Echo) {
-                window.Echo.private('ventas') // Si es un canal privado, usa private
-                    .listen('.MessageSent', (data) => {
+                window.Echo.channel('ventas') // Canal público (sin `private`)
+                    .listen('.MessageSent', (data) => { // Escuchar según broadcastAs()
                         console.log('Mensaje recibido:', data);
-
-                        if (!data || !data.message) {
-                            console.error('Error: el mensaje recibido no es válido', data);
-                            return;
-                        }
 
                         const messagesList = document.getElementById('messagesList');
                         const li = document.createElement('li');
@@ -276,16 +272,17 @@
                     })
                     .error((error) => {
                         console.error('Error al suscribirse al canal:', error);
-                    });
+                    }); // ← Se cierra correctamente el método `error()`
 
             } else {
                 console.error('Laravel Echo no está configurado correctamente.');
             }
 
-            document.getElementById('subscribeButton').addEventListener('click', subscribeToChannel);
-            document.getElementById('sendMessageButton').addEventListener('click', sendMessage);
+            document.getElementById('subscribeButton')?.addEventListener('click', subscribeToChannel);
+            document.getElementById('sendMessageButton')?.addEventListener('click', sendMessage);
+            
             loadUserData();
-    });
+        });
     </script>
 </body>
 </html>

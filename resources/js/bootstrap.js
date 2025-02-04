@@ -33,13 +33,8 @@ window.Echo.connector.pusher.connection.bind('error', (err) => {
 });
 
 // Suscribirse al canal 'ventas'
-window.Echo.channel('ventas')
-    .listen('.MessageSent', (data) => {
-        console.log('Mensaje recibido:', data);
-        const messagesList = document.getElementById('messagesList');
-        const li = document.createElement('li');
-        li.textContent = `${data.user.name}: ${data.message}`;
-        messagesList.appendChild(li);
+window.Echo.channel("ventas").listen("MessageSent", (event) => {
+    console.log("Mensaje recibido:", event);
 });
 
 console.log("🔄 Intentando conectar al WebSocket...");
