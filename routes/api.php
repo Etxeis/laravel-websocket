@@ -42,6 +42,3 @@ Route::post('/user/add-channel', [ChannelController::class, 'addChannel']);
 
 // Eliminar un canal de un usuario
 Route::post('/user/remove-channel', [ChannelController::class, 'removeChannel']);
-
-// Enviar mensaje por canal
-Route::post('/send-message', [MessageController::class, 'sendMessage']);

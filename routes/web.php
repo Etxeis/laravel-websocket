@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AuthController;
+use App\Events\MessageSent;
 
 Route::get('/', function () {
     return view('welcome');
@@ -27,3 +28,13 @@ Route::get('/home', function (Request $request) {
 Route::get('/channelAdmin', function () {
     return view('channelAdmin');
 });
+
+Route::get('/ws', function () {
+    return view('test');
+});
+
+Route::post('/send-message', function (Request $request) {
+    event(new MessageSent($request->message));
+    return null;
+});
+

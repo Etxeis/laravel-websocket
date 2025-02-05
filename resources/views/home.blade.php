@@ -280,7 +280,7 @@
 
             document.getElementById('subscribeButton')?.addEventListener('click', subscribeToChannel);
             document.getElementById('sendMessageButton')?.addEventListener('click', sendMessage);
-            
+
             loadUserData();
         });
     </script>
