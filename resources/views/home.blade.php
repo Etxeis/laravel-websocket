@@ -212,6 +212,7 @@
         }
 
         // Función para enviar un mensaje al canal
+        // Función para enviar un mensaje al canal
         async function sendMessage() {
             // Verificar si hay un token en localStorage
             const token = localStorage.getItem('token');
@@ -254,6 +255,9 @@
                 alert('Error en la conexión con el servidor.'); // Mostrar un mensaje de error en caso de excepción
             }
         }
+
+        // Asignar la función sendMessage al botón de enviar mensaje
+        document.getElementById('sendMessageButton').addEventListener('click', sendMessage);
 
         // Escuchar mensajes del canal 'ventas'
         // Esperar a que el DOM esté completamente cargado

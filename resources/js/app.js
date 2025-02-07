@@ -9,23 +9,24 @@ form.addEventListener('submit', function (event) {
 
     const userInput = inputMessage.value;
 
+    // Enviar el mensaje usando Axios
     window.axios.post('/send-message', {
         message: userInput
     })
+    .then(response => {
+        console.log(response.data); // Mensaje enviado correctamente
+        inputMessage.value = ''; // Limpiar el campo de entrada
+    })
+    .catch(error => {
+        console.error('Error al enviar el mensaje:', error);
+    });
 });
 
-
-const channel = window.Echo.channel('ventas');
-
-channel.subscribed( () => {
-    console.log('Suscrito al canal!');
-}).listen('.send-message', (event) => {
-    console.log(event);
-    const message = event.message;
-
-    const li = document.createElement('li');
-
-    li.textContent = message;
-
-    listMessage.append(li);
-})
+// Escuchar mensajes del canal 'ventas'
+window.Echo.channel('ventas')
+    .listen('MessageSent', (e) => {
+        const messageList = document.getElementById('list-messages');
+        const newMessage = document.createElement('li');
+        newMessage.textContent = e.message;
+        messageList.appendChild(newMessage);
+    });

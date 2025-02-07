@@ -33,8 +33,7 @@ Route::get('/ws', function () {
     return view('test');
 });
 
-Route::post('/send-message', function (Request $request) {
-    event(new MessageSent($request->message));
-    return null;
+Route::get('/send-message', function () {
+    MessageSent::dispatch(request()->message);
+    return view('test');
 });
-

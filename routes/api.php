@@ -9,6 +9,11 @@ use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\MessageController;
 
+
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
 Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
     Route::post('register', 'register');
